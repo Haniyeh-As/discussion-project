@@ -39,6 +39,7 @@ class AuthTest extends TestCase
     public function test_register_should_be_validate()
     {
         $response = $this->postJson(route('auth.register'));
+
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
