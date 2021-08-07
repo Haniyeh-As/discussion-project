@@ -11,18 +11,23 @@ Route::prefix('/channel')->group(function (){
         'getAllChannelsList'
     ])->name('channel.all');
 
-    Route::post('/create',[
-        ChannelController::class,
-        'createNewChannel'
-    ])->name('channel.create');
+    Route::middleware('can:channel management')->group(function (){
 
-    Route::put('/update',[
-        ChannelController::class,
-        'updateChannel'
-    ])->name('channel.update');
+        Route::post('/create',[
+            ChannelController::class,
+            'createNewChannel'
+        ])->name('channel.create');
 
-    Route::delete('/delete',[
-        ChannelController::class,
-        'deleteChannel'
-    ])->name('channel.delete');
+        Route::put('/update',[
+            ChannelController::class,
+            'updateChannel'
+        ])->name('channel.update');
+
+        Route::delete('/delete',[
+            ChannelController::class,
+            'deleteChannel'
+        ])->name('channel.delete');
+
+    });
+
 });
