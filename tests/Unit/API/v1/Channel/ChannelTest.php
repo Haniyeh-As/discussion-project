@@ -4,6 +4,7 @@ namespace tests\Unit\API\v1\Channel;
 
 use App\channel;
 use App\User;
+use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
@@ -48,18 +49,20 @@ class ChannelTest extends TestCase
         $this->registerRolesAndPermissions();
 
         $user = factory(User::class)->create();
+        Sanctum::actingAs($user);
         $user->givePermissionTo('channel management');
 
-        $response = $this->actingAs($user)->postJson(route('channel.create'),[]);
+        $response = $this->postJson(route('channel.create'),[]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_create_new_channel()
     {
         $user = factory(User::class)->create();
+        Sanctum::actingAs($user);
         $user->givePermissionTo('channel management');
 
-        $response = $this->actingAs($user)->postJson(route('channel.create'),[
+        $response = $this->postJson(route('channel.create'),[
             'name' => 'laravel',
         ]);
         $response->assertStatus(Response::HTTP_CREATED);
@@ -69,22 +72,24 @@ class ChannelTest extends TestCase
     public function test_channel_update_should_be_validated()
     {
         $user = factory(User::class)->create();
+        Sanctum::actingAs($user);
         $user->givePermissionTo('channel management');
 
-        $response = $this->actingAs($user)->json('PUT',route('channel.update'),[]);
+        $response = $this->json('PUT',route('channel.update'),[]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_channel_update()
     {
         $user = factory(User::class)->create();
+        Sanctum::actingAs($user);
         $user->givePermissionTo('channel management');
 
         $channel = factory(channel::class)->create([
             'name' => 'Laravel'
         ]);
 
-        $response = $this->actingAs($user)->json('PUT',route('channel.update'),[
+        $response = $this->json('PUT',route('channel.update'),[
             'id' => $channel->id,
             'name' => 'Vuejs'
         ]);
@@ -101,20 +106,22 @@ class ChannelTest extends TestCase
     public function test_channel_delete_should_be_deleted()
     {
         $user = factory(User::class)->create();
+        Sanctum::actingAs($user);
         $user->givePermissionTo('channel management');
 
-        $response = $this->actingAs($user)->json('DELETE',route('channel.delete'),[]);
+        $response = $this->json('DELETE',route('channel.delete'),[]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function test_delete_channel()
     {
         $user = factory(User::class)->create();
+        Sanctum::actingAs($user);
         $user->givePermissionTo('channel management');
 
         $channel = factory(channel::class)->create();
 
-        $response = $this->actingAs($user)->json('DELETE',route('channel.delete'),[
+        $response = $this->json('DELETE',route('channel.delete'),[
             'id' => $channel->id
         ]);
 
