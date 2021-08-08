@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Unit\API\v1\Channel;
+namespace tests\Feature\API\v1\Channel;
 
 use App\channel;
 use App\User;
