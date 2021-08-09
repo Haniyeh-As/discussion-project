@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API\v1\Thread;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\ThreadRepository;
-use App\Thread;
 use Symfony\Component\HttpFoundation\Response;
 
 

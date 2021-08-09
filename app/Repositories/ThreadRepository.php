@@ -15,6 +15,6 @@ class ThreadRepository
 
     public function getThreadBySlug($slug)
     {
-        return Thread::whereSlug()->whereFlag(1)->first();
+        return Thread::whereSlug($slug)->whereFlag(1)->first();
     }
 }

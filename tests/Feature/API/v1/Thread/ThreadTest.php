@@ -8,9 +8,7 @@ use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function all_threads_list_should_be_accessible()
     {
         $response = $this->get(route('threads.index'));
