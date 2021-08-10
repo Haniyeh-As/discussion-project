@@ -27,7 +27,7 @@ class ThreadRepository
             'slug' => Str::slug($request->input('title')),
             'content' => $request->input('content'),
             'channel_id' => $request->input('channel_id'),
-            'user_id' => auth()->user()->id(),
+            'user_id' => auth()->user()->id,
         ]);
     }
 }
