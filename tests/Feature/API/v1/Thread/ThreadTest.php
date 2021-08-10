@@ -30,8 +30,10 @@ class ThreadTest extends TestCase
     }
 
     /** @test  */
-    public function thread_should_be_validated()
+    public function create_thread_should_be_validated()
     {
+        Sanctum::actingAs(factory(User::class)->create());
+
         $response = $this->postJson(route('threads.store'),[]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -50,5 +52,39 @@ class ThreadTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
+    }
+
+    /** @test  */
+    public function edit_thread_should_be_validated()
+    {
+        Sanctum::actingAs(factory(User::class)->create());
+
+        $thread = factory(Thread::class)->create();
+
+        $response = $this->putJson(route('threads.update',[$thread]),[]);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    /** @test  */
+    public function can_update_thread()
+    {
+        Sanctum::actingAs(factory(User::class)->create());
+
+        $thread = factory(Thread::class)->create([
+            'title' => 'Foo',
+            'content' => 'Bar',
+            'channel_id' => factory(channel::class)->create()->id,
+        ]);
+
+        $response = $this->putJson(route('threads.update',[$thread]),[
+           'title' => 'Bar',
+           'content' => 'Bar',
+           'channel_id' => factory(channel::class)->create()->id,
+        ])->assertSuccessful();
+
+        $thread->refresh();
+
+        $this->assertSame('Bar',$thread->title);
+
     }
 }
