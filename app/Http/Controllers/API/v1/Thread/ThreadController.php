@@ -42,7 +42,12 @@ class ThreadController extends Controller
 
     public function update(Request $request, Thread $thread)
     {
-        $request->validate([
+        $request->has('best_answer_id')
+            ? $request->validate([
+                'best_answer_id' => 'required'
+            ])
+
+            : $request->validate([
             'title' => 'required',
             'content' => 'required',
             'channel_id' => 'required'

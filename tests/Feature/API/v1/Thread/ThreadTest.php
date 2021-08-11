@@ -89,6 +89,22 @@ class ThreadTest extends TestCase
     }
 
     /** @test  */
+    public function can_add_best_answer_id_for_thread()
+    {
+        Sanctum::actingAs(factory(User::class)->create());
+
+        $thread = factory(Thread::class)->create();
+
+        $response = $this->putJson(route('threads.update',[$thread]),[
+            'best_answer_id' => 1
+        ])->assertSuccessful();
+
+        $thread->refresh();
+
+        $this->assertSame('1',$thread->best_answer_id);
+    }
+
+    /** @test  */
     public function can_delete_thread()
     {
         Sanctum::actingAs(factory(User::class)->create());
