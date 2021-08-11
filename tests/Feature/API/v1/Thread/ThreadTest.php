@@ -87,4 +87,13 @@ class ThreadTest extends TestCase
         $this->assertSame('Bar',$thread->title);
 
     }
+
+    /** @test  */
+    public function can_delete_thread()
+    {
+        Sanctum::actingAs(factory(User::class)->create());
+        $thread = factory(Thread::class)->create();
+        $response = $this->delete(route('threads.destroy',[$thread->id]));
+        $response->assertStatus(Response::HTTP_OK);
+    }
 }

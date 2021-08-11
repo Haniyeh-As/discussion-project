@@ -40,4 +40,9 @@ class ThreadRepository
             'channel_id' => $request->input('channel_id')
         ]);
     }
+
+    public function destroy($id)
+    {
+        Thread::destroy($id);
+    }
 }

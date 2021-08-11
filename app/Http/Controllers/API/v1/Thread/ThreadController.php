@@ -55,4 +55,13 @@ class ThreadController extends Controller
         ],Response::HTTP_OK);
     }
 
+    public function destroy($id)
+    {
+        resolve(ThreadRepository::class)->destroy($id);
+
+        return \response()->json([
+            'message' => 'Thread Deleted Successfully'
+        ],Response::HTTP_OK);
+    }
+
 }
