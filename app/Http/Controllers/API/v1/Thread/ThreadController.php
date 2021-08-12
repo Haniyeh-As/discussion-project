@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ThreadRepository;
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -53,16 +54,32 @@ class ThreadController extends Controller
             'channel_id' => 'required'
         ]);
 
-        resolve(ThreadRepository::class)->update($thread,$request);
+        if (Gate::forUser(auth()->user())->allows('user-thread',$thread)){
+
+            resolve(ThreadRepository::class)->update($thread,$request);
+
+                return \response()->json([
+                    'message' => 'Thread Updated Successfully'
+                ],Response::HTTP_OK);
+
+        }
 
         return \response()->json([
-            'message' => 'Thread Updated Successfully'
-        ],Response::HTTP_OK);
+            'message' => 'Access Denied'
+        ],Response::HTTP_FORBIDDEN);
     }
 
-    public function destroy($id)
+    public function destroy(Thread $thread)
     {
-        resolve(ThreadRepository::class)->destroy($id);
+        if (Gate::forUser(auth()->user())->allows('user-thread',$thread)){
+
+            resolve(ThreadRepository::class)->destroy($thread);
+
+            return \response()->json([
+                'message' => 'Thread Deleted Successfully'
+            ],Response::HTTP_OK);
+
+        }
 
         return \response()->json([
             'message' => 'Thread Deleted Successfully'

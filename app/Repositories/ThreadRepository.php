@@ -48,8 +48,8 @@ class ThreadRepository
         }
     }
 
-    public function destroy($id)
+    public function destroy(Thread $thread)
     {
-        Thread::destroy($id);
+        $thread->delete();
     }
 }
