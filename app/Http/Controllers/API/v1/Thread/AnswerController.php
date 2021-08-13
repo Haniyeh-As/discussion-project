@@ -7,6 +7,7 @@ namespace App\Http\Controllers\API\v1\Thread;
 use App\Answer;
 use App\Http\Controllers\Controller;
 use App\Repositories\AnswerRepository;
+use App\Thread;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,6 +26,10 @@ class AnswerController extends Controller
             'content' => 'required',
             'thread_id' => 'required'
         ]);
+
+        resolve(AnswerRepository::class)->store($request);
+
+        return \response()->json([],Response::HTTP_CREATED);
     }
 
     public function update(Request $request, Answer $answer)
