@@ -17,4 +17,13 @@ class AnswerTest extends TestCase
         $response = $this->get(route('answers.index'));
         $response->assertSuccessful();
     }
+
+    /** @test  */
+    public function create_answer_should_be_validated()
+    {
+        $response = $this->postJson(route('answers.store'),[]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonValidationErrors(['content','thread_id']);
+    }
 }

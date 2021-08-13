@@ -21,7 +21,10 @@ class AnswerController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'content' => 'required',
+            'thread_id' => 'required'
+        ]);
     }
 
     public function update(Request $request, Answer $answer)
