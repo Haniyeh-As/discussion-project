@@ -41,8 +41,6 @@ class ThreadTest extends TestCase
     /** @test  */
     public function can_create_thread()
     {
-        //$this->withoutExceptionHandling();
-
         Sanctum::actingAs(factory(User::class)->create());
 
         $response = $this->postJson(route('threads.store'),[

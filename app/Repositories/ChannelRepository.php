@@ -5,7 +5,6 @@ namespace App\Repositories;
 
 
 use App\channel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ChannelRepository

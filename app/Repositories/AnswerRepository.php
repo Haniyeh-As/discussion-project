@@ -1,16 +1,10 @@
 <?php
 
-
 namespace App\Repositories;
-
-namespace App\Repositories;
-
 
 use App\Answer;
-use App\channel;
 use App\Thread;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class AnswerRepository
 {
@@ -23,7 +17,7 @@ class AnswerRepository
     {
         Thread::find($request->thread_id)->answers()->create([
             'content' => $request->input('content'),
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id()
         ]);
     }
 }

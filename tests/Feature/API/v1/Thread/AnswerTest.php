@@ -5,6 +5,7 @@ namespace tests\Feature\API\v1\Thread;
 use App\channel;
 use App\Thread;
 use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -21,6 +22,7 @@ class AnswerTest extends TestCase
     /** @test */
     public function create_answer_should_be_validated()
     {
+        Sanctum::actingAs(factory(User::class)->create());
         $response = $this->postJson(route('answers.store'),[]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -30,7 +32,7 @@ class AnswerTest extends TestCase
     /** @test */
     public function can_submit_new_answer_for_thread()
     {
-        //$this->withoutExceptionHandling();
+       //$this->withoutExceptionHandling();
         Sanctum::actingAs(factory(User::class)->create());
 
         $thread = factory(Thread::class)->create();

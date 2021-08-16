@@ -10,16 +10,16 @@ class Thread extends Model
 
     public function channel()
     {
-        $this->belongsTo(channel::class);
+        return $this->belongsTo(channel::class);
     }
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function answers()
     {
-        $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class);
     }
 }
