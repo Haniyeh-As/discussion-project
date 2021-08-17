@@ -5,12 +5,15 @@ namespace tests\Feature\API\v1\Thread;
 use App\Answer;
 use App\Thread;
 use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class AnswerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function can_get_all_answer_list()
     {
@@ -61,10 +64,12 @@ class AnswerTest extends TestCase
     /** @test */
     public function can_update_own_answer_of_thread()
     {
-        Sanctum::actingAs(factory(User::class)->create());
+        $user = factory(User::class)->create();
+        Sanctum::actingAs($user);
 
         $answer = factory(Answer::class)->create([
             'content' => 'Foo',
+            'user_id' => $user->id
         ]);
 
         $response = $this->putJson(route('answers.update',[$answer]),[
@@ -83,9 +88,12 @@ class AnswerTest extends TestCase
     /** @test */
     public function can_delete_own_answer()
     {
-        Sanctum::actingAs(factory(User::class)->create());
+        $user = factory(User::class)->create();
+        Sanctum::actingAs($user);
 
-        $answer = factory(Answer::class)->create();
+        $answer = factory(Answer::class)->create([
+            'user_id' => $user->id
+        ]);
 
         $response = $this->delete(route('answers.destroy',[$answer]));
 

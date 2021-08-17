@@ -8,6 +8,7 @@ use App\Answer;
 use App\Http\Controllers\Controller;
 use App\Repositories\AnswerRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class AnswerController extends Controller
@@ -40,20 +41,35 @@ class AnswerController extends Controller
             'content' => 'required',
         ]);
 
-        resolve(AnswerRepository::class)->update($request,$answer);
+        if (Gate::forUser(auth()->user())->allows('user-answer',$answer)){
+            resolve(AnswerRepository::class)->update($request,$answer);
+
+            return \response()->json([
+                'message' => 'answer updated successfully'
+            ],Response::HTTP_OK);
+        }
 
         return \response()->json([
-            'message' => 'answer updated successfully'
-        ],Response::HTTP_OK);
+            'message' => 'Access Denied'
+        ],Response::HTTP_FORBIDDEN);
+
     }
 
     public function destroy(Answer $answer)
     {
-        resolve(AnswerRepository::class)->destroy($answer);
+        if (Gate::forUser(auth()->user())->allows('user-answer',$answer)) {
+
+            resolve(AnswerRepository::class)->destroy($answer);
+
+            return \response()->json([
+                'message' => 'Answer Deleted Successfully'
+            ],Response::HTTP_OK);
+
+        }
 
         return \response()->json([
-            'message' => 'Answer Deleted Successfully'
-        ],Response::HTTP_OK);
+            'message' => 'Access Denied'
+        ],Response::HTTP_FORBIDDEN);
     }
 
 }
