@@ -126,5 +126,7 @@ class ChannelTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
+
+        $this->assertTrue(channel::where('id',$channel->id)->count() === 0);
     }
 }
