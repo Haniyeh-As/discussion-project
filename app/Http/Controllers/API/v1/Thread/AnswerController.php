@@ -8,6 +8,8 @@ use App\Answer;
 use App\Http\Controllers\Controller;
 use App\Notifications\NewReplySubmitted;
 use App\Repositories\AnswerRepository;
+use App\Repositories\SubscribeRepository;
+use App\Repositories\UserRepository;
 use App\Subscribe;
 use App\Thread;
 use App\User;
@@ -35,9 +37,14 @@ class AnswerController extends Controller
         // Insert Data Into DB
         resolve(AnswerRepository::class)->store($request);
 
-        $notifible_user = Subscribe::query()->where('thread_id', $request->thread_id)->pluck('user_id')->all();
+        // Get List Of User Id Which Subscribed To A Thread Id
+        $notifible_users_id = resolve(SubscribeRepository::class)->getNotifiableUsers($request->thread_id);
 
-        Notification::send(User::find($notifible_user), new NewReplySubmitted(Thread::find($request->thread_id)));
+        // Get User Instance From Id
+        $notifible_users = resolve(UserRepository::class)->find($notifible_users_id);
+
+        // Send NewReplySubmitted Notification To Sunscribed Users
+        Notification::send($notifible_users, new NewReplySubmitted(Thread::find($request->thread_id)));
 
         return \response()->json([
             'message' => 'answer submitted successfully'
