@@ -10,6 +10,7 @@ use App\Notifications\NewReplySubmitted;
 use App\Repositories\AnswerRepository;
 use App\Subscribe;
 use App\Thread;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
@@ -36,7 +37,7 @@ class AnswerController extends Controller
 
         $notifible_user = Subscribe::query()->where('thread_id', $request->thread_id)->pluck('user_id')->all();
 
-        Notification::send($notifible_user, new NewReplySubmitted(Thread::find($request->thread_id)));
+        Notification::send(User::find($notifible_user), new NewReplySubmitted(Thread::find($request->thread_id)));
 
         return \response()->json([
             'message' => 'answer submitted successfully'
