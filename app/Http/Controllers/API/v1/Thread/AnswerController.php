@@ -46,6 +46,9 @@ class AnswerController extends Controller
         // Send NewReplySubmitted Notification To Sunscribed Users
         Notification::send($notifible_users, new NewReplySubmitted(Thread::find($request->thread_id)));
 
+        // Increase User Score
+        auth()->user()->increment('score', 10);
+
         return \response()->json([
             'message' => 'answer submitted successfully'
         ], Response::HTTP_CREATED);
