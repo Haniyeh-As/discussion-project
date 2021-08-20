@@ -27,4 +27,9 @@ class UserRepository
         ]);
     }
 
+    public function leaderboards()
+    {
+        return User::query()->orderByDesc('score')->paginate(20);
+    }
+
 }
