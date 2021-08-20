@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API\v1\User;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
-use App\User;
 use Symfony\Component\HttpFoundation\Response;
 
 
