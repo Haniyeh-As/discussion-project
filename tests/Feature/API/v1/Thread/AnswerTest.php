@@ -74,6 +74,8 @@ class AnswerTest extends TestCase
     /** @test */
     public function update_answer_should_be_validated()
     {
+        Sanctum::actingAs(factory(User::class)->create());
+
         $answer = factory(Answer::class)->create();
 
         $response = $this->putJson(route('answers.update',[$answer]),[]);
